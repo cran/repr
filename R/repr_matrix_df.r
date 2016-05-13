@@ -78,7 +78,7 @@ ellip.limit.arr <- function(
 			if (is.factor(a[, c])) {
 				# Factors: add ellipses to levels
 				levels(a[, c]) <- c(levels(a[, c]), ellipses)
-			} else if (inherits(a[, c], 'Date')) {
+			} else if (inherits(a[, c], 'Date') || inherits(a[, c], 'POSIXt') ) {
 				# Dates: convert to plain strings
 				a[, c] <- as.character(a[, c])
 			}
@@ -132,12 +132,15 @@ repr_matrix_generic <- function(
 	header.wrap, corner, head,
 	body.wrap, row.wrap, row.head,
 	cell, last.cell = cell,
-	escape.FUN = identity
+	escape.FUN = identity,
+	...,
+	rows = getOption('repr.matrix.max.rows'),
+	cols = getOption('repr.matrix.max.cols')
 ) {
 	has.rownames <- !is.null(rownames(x))
 	has.colnames <- !is.null(colnames(x))
 	
-	x <- ellip.limit.arr(x)
+	x <- ellip.limit.arr(x, rows, cols)
 	
 	header <- ''
 	if (has.colnames) {
@@ -147,7 +150,7 @@ repr_matrix_generic <- function(
 	}
 	
 	rows <- lapply(seq_len(nrow(x)), function(r) {
-		row <- escape.FUN(x[r, ])
+		row <- escape.FUN(slice.row(x, r))
 		cells <- sprintf(cell, format(row))
 		if (has.rownames) {
 			row.head <- sprintf(row.head, escape.FUN(rownames(x)[[r]]))
@@ -171,7 +174,8 @@ repr_html.matrix <- function(obj, ...) repr_matrix_generic(
 	'<th scope=col>%s</th>',
 	'<tbody>\n%s</tbody>\n', '\t<tr>%s</tr>\n', '<th scope=row>%s</th>',
 	'<td>%s</td>',
-	escape.FUN = html.escape)
+	escape.FUN = html.escape.vec,
+	...)
 
 #' @name repr_*.matrix/data.frame
 #' @export
@@ -196,7 +200,8 @@ repr_latex.matrix <- function(obj, ..., colspec = getOption('repr.matrix.latex.c
 		'%s\\\\\n\\hline\n', '  &', ' %s &',
 		'%s', '\t%s\\\\\n', '%s &',
 		' %s &',
-		escape.FUN = latex.escape)
+		escape.FUN = latex.escape.vec,
+		...)
 
 	#TODO: remove this quick’n’dirty post processing
 	gsub(' &\\', '\\', r, fixed = TRUE)
@@ -211,8 +216,15 @@ repr_latex.data.frame <- repr_latex.matrix
 
 #' @name repr_*.matrix/data.frame
 #' @export
-repr_text.matrix <- function(obj, ...)
-	paste(utils::capture.output(print(ellip.limit.arr(obj))), collapse = '\n')
+repr_text.matrix <- function(obj, ...) {
+	if (inherits(obj, c('tbl', 'data.table'))) {
+		# Coerce to data.frame to avoid special printing in dplyr and data.table.
+		obj <- as.data.frame(obj)
+	}
+	limited_obj <- ellip.limit.arr(obj)
+	print_output <- utils::capture.output(print(limited_obj))
+	paste(print_output, collapse = '\n')
+}
 
 #' @name repr_*.matrix/data.frame
 #' @export
