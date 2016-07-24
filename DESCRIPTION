@@ -1,8 +1,8 @@
 Package: repr
 Title: Serializable Representations
-Version: 0.7
+Version: 0.9
 Authors@R: c(
-    person('Philipp', 'A.', email = 'flying-sheep@web.de', role = c('aut', 'cre')),
+    person('Philipp', 'Angerer', email = 'phil.angerer@gmail.com', role = c('aut', 'cre')),
     person('Thomas', 'Kluyver', email = 'thomas@kluyver.me.uk', role = 'aut'),
     person('Jan', 'Schulz', email = 'jasc@gmx.net', role = 'aut'),
     person('abielr', role = 'ctb'),
@@ -10,12 +10,12 @@ Authors@R: c(
     person('Jim', 'Hester', role = 'ctb'),
     person('karldw', role = 'ctb')
     )
-Maintainer: Philipp A. <flying-sheep@web.de>
+Maintainer: Philipp Angerer <phil.angerer@gmail.com>
 Description: String and binary representations of objects for several formats /
     mime types.
 Depends: R (>= 3.0.1)
 Imports: utils, grDevices
-Suggests: highr, Cairo, testthat
+Suggests: methods, highr, Cairo, testthat
 Enhances: data.table, dplyr, htmlwidgets
 License: GPL-3
 LazyData: true
@@ -26,8 +26,8 @@ Collate: 'generics.r' 'options.r' 'package.r' 'utils.r'
         'repr_packageIQR.r' 'repr_recordedplot.r' 'repr_vector.r'
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-05-13 15:29:05 UTC; phil
-Author: Philipp A. [aut, cre],
+Packaged: 2016-07-24 10:32:13 UTC; phil
+Author: Philipp Angerer [aut, cre],
   Thomas Kluyver [aut],
   Jan Schulz [aut],
   abielr [ctb],
@@ -35,4 +35,4 @@ Author: Philipp A. [aut, cre],
   Jim Hester [ctb],
   karldw [ctb]
 Repository: CRAN
-Date/Publication: 2016-05-13 19:27:54
+Date/Publication: 2016-07-24 13:40:35
