@@ -25,73 +25,6 @@ test_that('max rows and cols are reasonable', {
   expect_true(cols < .Machine$integer.max)
 })
 
-test_that('get.limit.index sets the right indexes', {
-  # Limit a hypothetical length-10 vector to 2.
-  lim_index <- get_limit_index(10L, 2L)
-  expect_identical(lim_index$begin, 1L)
-  expect_identical(lim_index$end, 10L)
-  
-  # Limit a hypothetical length-10 vector to 3.
-  lim_index <- get_limit_index(10L, 3L)
-  expect_identical(lim_index$begin, 1L:2L)
-  expect_identical(lim_index$end, 10L)
-  
-  
-  # Limit a hypothetical length-10 vector to 4.
-  lim_index <- get_limit_index(10L, 4L)
-  expect_identical(lim_index$begin, 1L:2L)
-  expect_identical(lim_index$end, 9L:10L)
-  
-  # Limit a hypothetical length-10 vector to 9.
-  lim_index <- get_limit_index(10L, 9L)
-  expect_identical(lim_index$begin, 1L:5L)
-  expect_identical(lim_index$end, 7L:10L)  
-})
-
-
-test_that('ellip_limit_vec returns correctly for numerics', {
-  test_vec <- 10:1
-  lim <- 2
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expect_identical(limited_vec, c('10', ellip_h, '1'))
-
-  lim <- 5
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expect_identical(limited_vec, c('10', '9', '8', ellip_h, '2', '1'))
-  
-  lim <- 6
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expect_identical(limited_vec, c('10', '9', '8', ellip_h, '3', '2', '1'))
-  
-  lim <- 9
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expect_identical(limited_vec, c('10', '9', '8', '7', '6', ellip_h, '4', '3', '2', '1'))
-})
-
-
-test_that('ellip_limit_vec returns correctly for factors', {
-  test_vec <- factor(10:1)
-  lim <- 2
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expected_vec <- c('10', ellip_h, '1')
-  expect_identical(as.character(limited_vec), expected_vec)
-
-  lim <- 5
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expected_vec <- c(10, 9, 8, ellip_h, 2, 1)
-  expect_identical(as.character(limited_vec), expected_vec)
-  
-  lim <- 6
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expected_vec <- c(10, 9, 8, ellip_h, 3, 2, 1)
-  expect_identical(as.character(limited_vec), expected_vec)
-  
-  lim <- 9
-  limited_vec <- ellip_limit_vec(test_vec, lim, ellip_h)
-  expected_vec <- c(10, 9, 8, 7, 6, ellip_h, 4, 3, 2, 1)
-  expect_identical(as.character(limited_vec), expected_vec)
-})
-
 
 test_that('ellip_limit_arr doesn\'t change arrays that are small', {
   # Make sure the limits are reasonable before we test.
@@ -261,6 +194,71 @@ test_that('ellip_limit_arr limits arrays that are long (but not wide)', {
   }
 })
 
+test_that('ellip_limit_arr preserves rownames when limiting rows', {
+	# Make sure the limits are reasonable before we test.
+	orig_rows_limit <- getOption('repr.matrix.max.rows')
+	orig_cols_limit <- getOption('repr.matrix.max.cols')
+	if (orig_cols_limit < 3L) {
+		options('repr.matrix.max.cols' = 3L)
+	}
+	
+	test_mat <- matrix(16:1, ncol = 2L, dimnames = list(letters[1:8], NULL))
+	test_df <- as.data.frame(test_mat)
+	
+	options('repr.matrix.max.rows' = 4L)
+	limited_mat <- ellip_limit_arr(test_mat)
+	limited_df <- ellip_limit_arr(test_df)
+	expected_rownames <- c(letters[1:2], ellip_v, letters[7:8])
+	expected_mat <- matrix(c(
+		'16', '15', ellip_v, '10', ' 9',
+		'8', '7', ellip_v, '2', '1'), ncol = 2L, dimnames = list(expected_rownames, NULL))
+	expected_df_mat <- as.matrix(data.frame(
+		V1 = c('16', '15', ellip_v, '10', ' 9'),
+		V2 = c('8', '7', ellip_v, '2', '1'), row.names = expected_rownames))
+	expect_identical(limited_mat, expected_mat)
+	expect_identical(limited_df,  expected_df_mat)
+	if (has_dt) {
+		test_dt <- data.table::as.data.table(test_mat)
+		rownames(test_dt) <- rownames(test_mat)  # force keeping rownames
+		limited_dt <- ellip_limit_arr(test_dt)
+		expect_identical(limited_dt, expected_df_mat)
+	}
+	if (has_dplyr) {
+		test_tbl <- dplyr::as.tbl(test_df)
+		limited_tbl <- ellip_limit_arr(test_tbl)
+		expect_identical(limited_tbl, expected_df_mat)
+	}
+	
+	# Repeat with an odd limit.
+	options('repr.matrix.max.rows' = 5L)
+	limited_mat <- ellip_limit_arr(test_mat)
+	limited_df <- ellip_limit_arr(test_df)
+	expected_rownames <- c(letters[1:3], ellip_v, letters[7:8])
+	expected_mat <- matrix(c(
+		'16', '15', '14', ellip_v, '10', ' 9',
+		'8', '7', '6', ellip_v, '2', '1'), ncol = 2L, dimnames = list(expected_rownames, NULL))
+	expected_df_mat <- as.matrix(data.frame(
+		V1 = c('16', '15', '14', ellip_v, '10', ' 9'),
+		V2 = c('8', '7', '6', ellip_v, '2', '1'), row.names = expected_rownames))
+	expect_identical(limited_mat, expected_mat)
+	expect_identical(limited_df,  expected_df_mat)
+	if (has_dt) {
+		limited_dt <- ellip_limit_arr(test_dt)
+		expect_identical(limited_dt,  expected_df_mat)
+	}
+	if (has_dplyr) {
+		limited_tbl <- ellip_limit_arr(test_tbl)
+		expect_identical(limited_tbl, expected_df_mat)
+	}
+	
+	# Reset limits
+	if (getOption('repr.matrix.max.rows') != orig_rows_limit) {
+		options('repr.matrix.max.rows' = orig_rows_limit)
+	}
+	if (getOption('repr.matrix.max.cols') != orig_cols_limit) {
+		options('repr.matrix.max.cols' = orig_cols_limit)
+	}
+})
 
 test_that('ellip_limit_arr limits arrays that are long and wide', {
 
