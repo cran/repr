@@ -22,3 +22,16 @@ repr_html.htmlwidget <- function(obj, ...) {
 	
 	readChar(htmlfile, file.info(htmlfile)$size)
 }
+
+
+#' @name repr_*.htmlwidget
+#' @export
+repr_text.shiny.tag.list <- function(obj, ...) sprintf(
+	'Use HTML to display this shiny-taglist of length %s with named elements %s',
+	length(obj), paste(lapply(obj, function(t) dQuote(t$elementId)), collapse = '\n'))
+
+#' @name repr_*.htmlwidget
+#' @export
+repr_html.shiny.tag.list <- function(obj, ...) {
+	paste(lapply(obj, repr_html), collapse = '\n')
+}
