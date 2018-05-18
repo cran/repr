@@ -1,5 +1,6 @@
-cd3a9b291b0f49964a5b46a71d1def67 *DESCRIPTION
+d53e6c092a6c1f6f7c6f8b604ddab031 *DESCRIPTION
 2dda24c4103397693bb9a21cab8e66b3 *NAMESPACE
+2c00bf4c5ce1f23d57c83bf1c3c5eafc *NEWS.md
 48e7a7197cc617eeae8e658f161b1f53 *R/generics.r
 bf842c9d83ce83ac9fe6545e2444da3e *R/options.r
 fa4ce413fec349492f9491d7d5c26c3d *R/package.r
@@ -8,7 +9,7 @@ a02b176218bb753066c9bf3b46b5349b *R/repr_factor.r
 e9453c2f452e165d361e9cfdb9422e92 *R/repr_function.r
 516b42730fba17394592ad971315e886 *R/repr_help_files_with_topic.r
 fb1a0027c7ea9780343a1a214583c7b1 *R/repr_htmlwidget.r
-f532e2d44add2fb61da5ab4e0451ab77 *R/repr_list.r
+1a0a81a1c139d6d29be5744abc223f66 *R/repr_list.r
 686b9d6509af5ab9ad207ccabae085c7 *R/repr_matrix_df.r
 5ec2264e76be0e450932a227478e583c *R/repr_packageIQR.r
 4328b9ef203cac106f77f6ac0ecf4e63 *R/repr_recordedplot.r
@@ -36,6 +37,6 @@ a46842bbfdebb6615163ffa6397ce443 *tests/testthat/test_array_df.r
 bf1fd51d222990f8b8deed84dd128746 *tests/testthat/test_array_manipulation.r
 6bbe11590f94db4a07124ec77b3956aa *tests/testthat/test_escaping.r
 8a6bec6efdfbb0e914c795841adea5b5 *tests/testthat/test_list.r
-86846f8bf78639c64ffd1e1c09af11fa *tests/testthat/test_repr_htmlwidget.r
+79c3803414056bb085ff5ef309e52e6f *tests/testthat/test_repr_htmlwidget.r
 a0eb8b9ea0adcfaf9553de4753ab44c8 *tests/testthat/test_repr_packageIQR.r
 fb004ee30422a72ea74f9273916feba3 *tests/testthat/test_vector.r
