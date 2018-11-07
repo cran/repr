@@ -1,5 +1,4 @@
 #' @importFrom htmltools renderTags
-#' @importFrom base64enc dataURI
 embed_tags <- function(obj, ...) {
 	obj <- renderTags(obj)
 	
@@ -27,7 +26,7 @@ embed_tags <- function(obj, ...) {
 			# TODO: is this *always* the correct mime type?
 			html <- c(html, sprintf(
 				'<script src="%s"></script>', 
-				dataURI(mime = 'application/javascript', file = f)
+				data_uris(mime = 'application/javascript', files = f)
 			))
 		}
 		
@@ -36,7 +35,7 @@ embed_tags <- function(obj, ...) {
 			# TODO: is this *always* the correct mime type? Use base64enc::checkUTF8() to ensure UTF-8 is OK?
 			html <- c(html, sprintf(
 				'<link href="%s" rel="stylesheet" />', 
-				dataURI(mime = 'text/css;charset-utf-8', file = f)
+				data_uris(mime = 'text/css;charset-utf-8', files = f)
 			))
 		}
 		

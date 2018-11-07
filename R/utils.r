@@ -106,6 +106,12 @@ strindent <- function(string, indent = '\t') {
 	gsub('\n', paste0('\n', indent), paste0(indent, stripped))
 }
 
+as_name_or_na <- function(x) {
+	if (is.character(x) && nchar(x) == 0) NA_character_
+	else as.name(x)
+}
+		
+
 # Create the actually-used functions from the shells above.
 latex_escape_names <- function(obj) .escape_names(obj, 'latex')
 html_escape_names  <- function(obj) .escape_names(obj, 'html')
@@ -113,3 +119,13 @@ any_latex_specials <- function(char_vec) .any_specials(char_vec, latex_specials)
 any_html_specials  <- function(char_vec) .any_specials(char_vec, html_specials)
 latex_escape_vec <- function(vec) .escape_vec(vec, 'latex')
 html_escape_vec  <- function(vec) .escape_vec(vec, 'html')
+
+#' @importFrom base64enc dataURI
+data_uris <- function(..., mime = '', encoding = 'base64', files) {
+	stopifnot(length(list(...)) == 0L)
+	vapply(
+		files,
+		function(f) dataURI(mime = mime, encoding = encoding, file = f),
+		character(1L))
+}
+
