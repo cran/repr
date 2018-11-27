@@ -1,6 +1,6 @@
 Package: repr
 Title: Serializable Representations
-Version: 0.17
+Version: 0.18
 Authors@R: c(
     person('Philipp', 'Angerer', email = 'phil.angerer@gmail.com', role = c('aut', 'cre')),
     person('Thomas', 'Kluyver', email = 'thomas@kluyver.me.uk', role = 'aut'),
@@ -18,7 +18,7 @@ Description: String and binary representations of objects for several formats /
 Depends: R (>= 3.0.1)
 Imports: utils, grDevices, htmltools, base64enc
 Suggests: methods, highr, Cairo, stringr, testthat, leaflet
-Enhances: data.table, dplyr, htmlwidgets
+Enhances: data.table, dplyr, htmlwidgets, vegalite, plotly, geojsonio
 License: GPL-3
 LazyData: true
 Encoding: UTF-8
@@ -26,10 +26,11 @@ Collate: 'generics.r' 'options.r' 'package.r' 'repr_datatable.r'
         'utils.r' 'repr_list.r' 'repr_vector.r' 'repr_factor.r'
         'repr_function.r' 'repr_help_files_with_topic.r'
         'repr_htmlwidget.r' 'repr_matrix_df.r' 'repr_packageIQR.r'
-        'repr_recordedplot.r'
-RoxygenNote: 6.1.0
+        'repr_plotly.r' 'repr_recordedplot.r' 'repr_spatial.r'
+        'repr_vega.r'
+RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2018-11-07 14:06:03 UTC; phil
+Packaged: 2018-11-27 12:10:10 UTC; phil
 Author: Philipp Angerer [aut, cre],
   Thomas Kluyver [aut],
   Jan Schulz [aut],
@@ -40,4 +41,4 @@ Author: Philipp Angerer [aut, cre],
   Dave Foster [ctb],
   Carson Sievert [ctb]
 Repository: CRAN
-Date/Publication: 2018-11-07 14:30:03 UTC
+Date/Publication: 2018-11-27 12:30:03 UTC
