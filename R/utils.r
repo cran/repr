@@ -42,7 +42,7 @@ latex_escape <- function(text) {
 
 	obj_names <- names(obj)
 	obj_rownames <- rownames(obj)
-	obj_colnames <- colnames(obj)
+	obj_colnames <- if (length(dim(obj_names)) > 1L) colnames(obj) else NULL
 
 	detect_specials <- match.fun(paste0('any_', escape_type, '_specials'))
 	escape_specials <- match.fun(paste0(escape_type, '_escape'))
@@ -51,10 +51,10 @@ latex_escape <- function(text) {
 		names(obj) <- escape_specials(obj_names)
 	if (detect_specials(obj_rownames))
 		rownames(obj) <- escape_specials(obj_rownames)
-	if (detect_specials(obj_colnames))
+	if (length(dim(obj_names)) > 1L && detect_specials(obj_colnames))
 		colnames(obj) <- escape_specials(obj_colnames)
 
-	return(obj)
+	obj
 }
 
 .any_specials <- function(char_vec, specials_list) {
@@ -83,7 +83,8 @@ latex_escape <- function(text) {
 			vec <- escape_specials(vec) # regular character vec
 		}
 	}
-	return(vec)
+
+	vec
 }
 
 slice_row <- function(df, row) {
@@ -129,3 +130,25 @@ data_uris <- function(..., mime = '', encoding = 'base64', files) {
 		character(1L))
 }
 
+
+has_row_names <- function(x) {
+	rns <- rownames(x)
+	length(dim(x)) != 1 && length(rns) > 0 && !all(rns == seq_len(nrow(x))) && !all(rns == '')
+}
+
+
+flatten <- function(x){
+	if (!is.data.frame(x)) return(x)
+	dfcolumns <- rle(vapply(x, is.data.frame, logical(1L)))
+	if (!any(dfcolumns$values)) return(x)
+	
+	end <- cumsum(dfcolumns$lengths)
+	start <- end - dfcolumns$lengths + 1
+	
+	parts <- mapply(function(start, end, do_flatten) {
+		if (do_flatten) flatten(x[, start:end]) else x[, start:end]
+	}, start = start, end = end, do_flatten = dfcolumns$values, SIMPLIFY = FALSE)
+	
+	names(parts) <- colnames(x)
+	do.call(cbind, parts)
+}
