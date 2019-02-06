@@ -1,4 +1,4 @@
-cb89b7b4be395a09118dd5031600efbf *DESCRIPTION
+7cb2117bf7f24ec04961775016a100f0 *DESCRIPTION
 689dd5d0df87e929009c0521c13043f0 *NAMESPACE
 2c00bf4c5ce1f23d57c83bf1c3c5eafc *NEWS.md
 6901b06288be03d6d2b7cc581abc3193 *R/generics.r
@@ -19,7 +19,7 @@ e2cd62bcc93eddbca3d63c9d20e72488 *R/repr_list.r
 d4f45a245cba8a0592bb171a29da317b *R/repr_ts.r
 66c930a67761db1421aea0c39dbc1dcd *R/repr_vector.r
 624a308b2383893db1b6952c20aa43d0 *R/repr_vega.r
-ca35655c0aa761b3ae804aac33f2bb5f *R/utils.r
+c9168fcb02d40c225335bdd33abbe9ff *R/utils.r
 6a39453632beaeebfc2fd1d2cf162e67 *README.md
 73ce22c2752d6be6a8051387f1aebfc6 *man/repr-generics.Rd
 d26c329024f66f357b32daafab959cab *man/repr-options.Rd
@@ -42,11 +42,11 @@ affc6ac12ac4e660cf45fab20f2bb594 *man/repr_plotly1.-times.Rd
 d1a0a1bb5758bb8401b6dbf324b447b7 *man/repr_vega-open-paren-4-slash-lite2-close-paren-.-times.Rd
 ab8b5b6ebea7a2206206e3699d8f1831 *man/times-2repr.Rd
 286f184c95373dbc4e2d2539f77aa555 *tests/testthat.R
-bf1fd51d222990f8b8deed84dd128746 *tests/testthat/test_array_manipulation.r
+aa4afec6f83dbac99842be492ae46fa4 *tests/testthat/test_array_manipulation.r
 6bbe11590f94db4a07124ec77b3956aa *tests/testthat/test_escaping.r
 a83b2422ecea80d22ddffc6c97934b71 *tests/testthat/test_repr_array_df.r
 eb922c603dcd8b69183c828953ab211e *tests/testthat/test_repr_htmlwidget.r
-c90e10cd0d6254e563eb37a389f88984 *tests/testthat/test_repr_list.r
+2278842cb890b7d60a29650b6113e972 *tests/testthat/test_repr_list.r
 a0eb8b9ea0adcfaf9553de4753ab44c8 *tests/testthat/test_repr_packageIQR.r
 518661f2a52eeac94dde3704242f828b *tests/testthat/test_repr_vector.r
 409147782b3c9a8272cbca17c92dc4fb *tests/testthat/test_utils.r
