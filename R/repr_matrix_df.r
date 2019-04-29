@@ -2,12 +2,15 @@
 #' 
 #' HTML, LaTeX, and Markdown representations of Matrix-like objects
 #' 
-#' @param obj  The matrix or data.frame to create a representation for
-#' @param ...  ignored
+#' @param obj      The matrix or data.frame to create a representation for
+#' @param ...      ignored
+#' @param rows     The maximum number of rows displayed. The default is given by the option \code{repr.matrix.max.rows}
+#' @param cols     The maximum number of columns displayed. The default is given by the option \code{repr.matrix.max.cols}
 #' @param colspec  The colspec for the LaTeX table. The default is given by the option \code{repr.matrix.latex.colspec}
 #' 
 #' @seealso \link{repr-options} for \code{repr.matrix.latex.colspec}
 #' 
+#' @importFrom pillar type_sum
 #' @name repr_*.matrix/data.frame
 #' @include utils.r
 NULL
@@ -24,6 +27,7 @@ NULL
 ellip_h <- .char_fallback('\u22EF', '...')
 ellip_v <- .char_fallback('\u22EE', '...')
 ellip_d <- .char_fallback('\u22F1', '')
+times_s <- .char_fallback('\u00D7', 'x')
 
 # These are used for factor, so make sure they are unique
 ellipses <- unique(c(ellip_h, ellip_v, ellip_d))
@@ -68,7 +72,10 @@ arr_partition <- function(a, rows, cols) {
 arr_parts_format <- function(parts) structure(lapply(parts, arr_part_format), omit = attr(parts, 'omit'))
 arr_part_format <- function(part) {
 	f_part <- if (is.data.frame(part)) {
-		vapply(part, format, character(nrow(part)))
+		vapply(part, function(col) {
+			if (is.matrix(col)) apply(apply(col, 2L, format), 1L, paste, collapse = ', ')
+			else format(col)
+		}, character(nrow(part)))
 	} else {
 		# format(part) would work, but e.g. would left-pad *both* rows of matrix(7:10, 2L) instead of one
 		apply(part, 2L, format)
@@ -124,13 +131,14 @@ ellip_limit_arr <- function(
 repr_matrix_generic <- function(
 	x,
 	wrap,
-	header_wrap, corner, head,
+	header_wrap, headline_wrap, corner, head,
 	body_wrap, row_wrap, row_head,
 	cell,
 	escape_fun = identity,
 	...,
 	rows = getOption('repr.matrix.max.rows'),
-	cols = getOption('repr.matrix.max.cols')
+	cols = getOption('repr.matrix.max.cols'),
+	caption_override = NULL
 ) {
 	has_rownames <- has_row_names(x)
 	has_colnames <- !is.null(colnames(x)) && ncol(x) > 0
@@ -138,20 +146,55 @@ repr_matrix_generic <- function(
 	if (!has_rownames && !has_colnames && 0L %in% dim(x))
 		return('')
 	
+	# Get infos for caption and type headers
+	is_matrix <- !is.list(x)
+	cls <-
+		if (!is.null(caption_override)) caption_override
+		else if (!is.object(x)) class(x)[[1]]
+		else type_sum(x)
+	dims <- dim(x)
+	types <- if (is_matrix) type_sum(x) else {
+		type_vec <- sprintf('<%s>', sapply(x, type_sum))
+		# A row limit of 3 is the minimal choice, but we only have 1 anyway
+		as.vector(ellip_limit_arr(matrix(type_vec, nrow = 1L), 3L, cols))
+	}
+	
 	# TODO: ineffective to flatten the whole thing
 	# But when are we encountering huge nested arrays?
 	x <- ellip_limit_arr(flatten(x), rows, cols)
 	
 	header <- ''
 	if (has_colnames) {
-		headers <- sprintf(head, escape_fun(colnames(x)))
-		if (has_rownames) headers <- c(corner, headers)
-		header <- sprintf(header_wrap, paste(headers, collapse = ''))
+		headers <- escape_fun(colnames(x))
+		typehds <- escape_fun(types)
+		
+		header_raw <-
+			if (is_matrix || is.null(headline_wrap)) {
+				# if we have a data frame but no wrapper for header lines,
+				# we just concatenate each column name with its type.
+				headers <- sprintf(head, if (is_matrix) headers else paste(headers, typehds))
+				if (has_rownames) headers <- c(corner, headers)
+				headline <- paste(headers, collapse = '')
+				if (is.null(headline_wrap)) headline else sprintf(headline_wrap, headline)
+			} else {
+				# else we create one line for names and one for types.
+				headers <- sprintf(head, headers)
+				typehds <- sprintf(head, typehds)
+				if (has_rownames) {
+					headers <- c(corner, headers)
+					typehds <- c(corner, typehds)
+				}
+				headline <- sprintf(headline_wrap, paste(headers, collapse = ''))
+				typeline <- sprintf(headline_wrap, paste(typehds, collapse = ''))
+				paste0(headline, typeline)
+			}
+		header <- sprintf(header_wrap, header_raw)
+		stopifnot(length(header) == 1L)
 	}
 	
 	rows <- lapply(seq_len(nrow(x)), function(r) {
 		row <- escape_fun(slice_row(x, r))
-		cells <- sprintf(cell, format(row))
+		cells <- sprintf(cell, row)
 		if (has_rownames) {
 			row_head <- sprintf(row_head, escape_fun(rownames(x)[[r]]))
 			cells <- c(row_head, cells)
@@ -161,20 +204,29 @@ repr_matrix_generic <- function(
 	
 	body <- sprintf(body_wrap, paste(rows, collapse = ''))
 	
-	sprintf(wrap, header, body)
+	caption <- sprintf('A %s: %s %s %s', cls, dims[[1]], times_s, dims[[2]])
+	if (is.null(caption_override) && is_matrix) caption <- sprintf('%s of type %s', caption, escape_fun(types))
+	
+	sprintf(wrap, caption, header, body)
 }
 
 
 #' @name repr_*.matrix/data.frame
 #' @export
-repr_html.matrix <- function(obj, ...) repr_matrix_generic(
+repr_html.matrix <- function(
 	obj,
-	'<table>\n%s%s</table>\n',
-	'<thead><tr>%s</tr></thead>\n', '<th></th>',
+	...,
+	rows = getOption('repr.matrix.max.rows'),
+	cols = getOption('repr.matrix.max.cols')
+) repr_matrix_generic(
+	obj,
+	'<table>\n<caption>%s</caption>\n%s%s</table>\n',
+	'<thead>\n%s</thead>\n', '\t<tr>%s</tr>\n', '<th></th>',
 	'<th scope=col>%s</th>',
 	'<tbody>\n%s</tbody>\n', '\t<tr>%s</tr>\n', '<th scope=row>%s</th>',
 	'<td>%s</td>',
 	escape_fun = html_escape_vec,
+	rows = rows, cols = cols,
 	...)
 
 #' @name repr_*.matrix/data.frame
@@ -189,7 +241,13 @@ repr_html.data.frame <- repr_html.matrix
 
 #' @name repr_*.matrix/data.frame
 #' @export
-repr_latex.matrix <- function(obj, ..., colspec = getOption('repr.matrix.latex.colspec')) {
+repr_latex.matrix <- function(
+	obj,
+	...,
+	rows = getOption('repr.matrix.max.rows'),
+	cols = getOption('repr.matrix.max.cols'),
+  colspec = getOption('repr.matrix.latex.colspec')
+) {
 	cols <- paste0(paste(rep(colspec$col, ncol(obj)), collapse = ''), colspec$end)
 	if (!is.null(rownames(obj))) {
 		row_head <- colspec$row_head
@@ -199,11 +257,13 @@ repr_latex.matrix <- function(obj, ..., colspec = getOption('repr.matrix.latex.c
 	
 	r <- repr_matrix_generic(
 		obj,
-		sprintf('\\begin{tabular}{%s}\n%%s%%s\\end{tabular}\n', cols),
-		'%s\\\\\n\\hline\n', '  &', ' %s &',
+		# todo: captionof or so
+		sprintf('%%s\n\\begin{tabular}{%s}\n%%s%%s\\end{tabular}\n', cols),
+		'%s\\hline\n', '%s\\\\\n', '  &', ' %s &',
 		'%s', '\t%s\\\\\n', '%s &',
 		' %s &',
 		escape_fun = latex_escape_vec,
+		rows = rows, cols = cols,
 		...)
 	
 	#TODO: remove this quick’n’dirty post processing
@@ -222,28 +282,30 @@ repr_latex.data.frame <- repr_latex.matrix
 
 #' @name repr_*.matrix/data.frame
 #' @export
-repr_markdown.matrix <- function(obj, ...) {
-	cols <- list(...)$cols
-	if (is.null(cols)) cols <- getOption('repr.matrix.max.cols')
-	
+repr_markdown.matrix <- function(
+	obj,
+	...,
+	rows = getOption('repr.matrix.max.rows'),
+	cols = getOption('repr.matrix.max.cols')
+) {
 	obj <- flatten(obj)
 	out_cols <- min(ncol(obj), cols + 1L) + as.integer(has_row_names(obj))
 	underline <- paste(rep('---', out_cols), collapse = '|')
 	
 	repr_matrix_generic(
 		obj,
-		'\n%s%s\n',
-		sprintf('|%%s\n|%s|\n', underline), ' <!--/--> |', ' %s |',
+		'\n%s\n\n%s%s\n',
+		sprintf('|%%s\n|%s|\n', underline), NULL, ' <!--/--> |', ' %s |',
 		'%s', '|%s\n', ' %s |',
 		' %s |',
-		escape_fun = identity,  # TODO
-		..., cols = cols)
+		escape_fun = markdown_escape,
+		rows = rows, cols = cols,
+		...)
 }
 
 #' @name repr_*.matrix/data.frame
 #' @export
 repr_markdown.data.frame <- repr_markdown.matrix
-
 
 
 # Text -------------------------------------------------------------------
@@ -253,12 +315,17 @@ repr_markdown.data.frame <- repr_markdown.matrix
 #' @name repr_*.matrix/data.frame
 #' @importFrom utils capture.output
 #' @export
-repr_text.matrix <- function(obj, ...) {
+repr_text.matrix <- function(
+	obj,
+	...,
+	rows = getOption('repr.matrix.max.rows'),
+	cols = getOption('repr.matrix.max.cols')
+) {
 	if (inherits(obj, c('tbl', 'data.table'))) {
 		# Coerce to data.frame to avoid special printing in dplyr and data.table.
 		obj <- as.data.frame(obj)
 	}
-	limited_obj <- ellip_limit_arr(obj, ...)
+	limited_obj <- ellip_limit_arr(obj, rows, cols)
 	print_output <- capture.output(print(limited_obj, quote = FALSE))
 	paste(print_output, collapse = '\n')
 }
