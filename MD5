@@ -1,4 +1,4 @@
-00a4e1cf8d939cdf42d9e2b65aa65ed8 *DESCRIPTION
+dadb54dfa994dfa15281ae2cd15df69b *DESCRIPTION
 85a3d698fc8068c4b9d93ac4280ba4f3 *NAMESPACE
 2c00bf4c5ce1f23d57c83bf1c3c5eafc *NEWS.md
 6901b06288be03d6d2b7cc581abc3193 *R/generics.r
@@ -11,7 +11,7 @@ eee61312745fc2896c803a7187128ab2 *R/repr_datatable.r
 086cc31f59e52d62f70982d96cedb607 *R/repr_help_files_with_topic.r
 c479795eb2bdc72b5ac40cdd55360d4f *R/repr_htmlwidget.r
 e2cd62bcc93eddbca3d63c9d20e72488 *R/repr_list.r
-de4b8fc08480e7ad44ff76480c65c6cc *R/repr_matrix_df.r
+448de90c04629d6b6ce03c10ad2aa575 *R/repr_matrix_df.r
 0bd11dee772560d9c7df028791679093 *R/repr_packageIQR.r
 83456dc47fdff45c0a84b3f8fdd287dd *R/repr_plotly.r
 2bfb6278c7aefcd9fb74cee02ac7d33b *R/repr_recordedplot.r
@@ -42,10 +42,10 @@ affc6ac12ac4e660cf45fab20f2bb594 *man/repr_plotly1.-times.Rd
 d1a0a1bb5758bb8401b6dbf324b447b7 *man/repr_vega-open-paren-4-slash-lite2-close-paren-.-times.Rd
 ab8b5b6ebea7a2206206e3699d8f1831 *man/times-2repr.Rd
 286f184c95373dbc4e2d2539f77aa555 *tests/testthat.R
-ecd189b851486ba67ec4e97a5d4f590f *tests/testthat/helpers.r
+17055d746d147e1c2c9adead7593d938 *tests/testthat/helpers.r
 aa4afec6f83dbac99842be492ae46fa4 *tests/testthat/test_array_manipulation.r
 ccd7a5a41886af5625fb38e3d3760e00 *tests/testthat/test_escaping.r
-925b9c6501df5a95e08a272801c432cc *tests/testthat/test_repr_array_df.r
+da6a3743a0bbb95bf3247e4612f3b811 *tests/testthat/test_repr_array_df.r
 c36f3efee717717583abc85674ebc258 *tests/testthat/test_repr_htmlwidget.r
 97b144d7e29fa239112bb042508fb272 *tests/testthat/test_repr_list.r
 8a53385a67970a69dae8284fceef951e *tests/testthat/test_repr_packageIQR.r
