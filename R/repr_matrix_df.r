@@ -211,7 +211,7 @@ repr_html.matrix <- function(
 	cols = getOption('repr.matrix.max.cols')
 ) repr_matrix_generic(
 	obj,
-	'<table>\n<caption>%s</caption>\n%s%s</table>\n',
+	'<table class="dataframe">\n<caption>%s</caption>\n%s%s</table>\n',
 	'<thead>\n%s</thead>\n', '\t<tr>%s</tr>\n', '<th></th>',
 	'<th scope=col>%s</th>',
 	'<tbody>\n%s</tbody>\n', '\t<tr>%s</tr>\n', '<th scope=row>%s</th>',
@@ -313,7 +313,7 @@ repr_text.matrix <- function(
 	cols = getOption('repr.matrix.max.cols')
 ) {
 	if (inherits(obj, c('tbl', 'data.table'))) {
-		# Coerce to data.frame to avoid special printing in dplyr and data.table.
+		# Coerce to data.frame to avoid special printing in tibble and data.table.
 		obj <- as.data.frame(obj)
 	}
 	limited_obj <- ellip_limit_arr(obj, rows, cols)

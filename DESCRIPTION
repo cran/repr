@@ -1,6 +1,6 @@
 Package: repr
 Title: Serializable Representations
-Version: 1.1.0
+Version: 1.1.3
 Authors@R: c(
     person('Philipp', 'Angerer', email = 'phil.angerer@gmail.com', role = c('aut', 'cre'), comment = c(ORCID = "0000-0002-0369-2888")),
     person('Thomas', 'Kluyver', email = 'thomas@kluyver.me.uk', role = 'aut'),
@@ -20,9 +20,9 @@ BugReports: https://github.com/IRkernel/repr/issues/
 Depends: R (>= 3.0.1)
 Imports: utils, grDevices, htmltools, jsonlite, pillar (>= 1.4.0),
         base64enc
-Suggests: methods, highr, Cairo, stringr, testthat, diffobj (>= 0.2.3),
-        leaflet
-Enhances: data.table, dplyr, htmlwidgets, vegalite, plotly, geojsonio
+Suggests: methods, highr, Cairo, stringr, testthat (>= 3.0.0), leaflet
+Enhances: data.table, tibble, htmlwidgets, vegalite, plotly, geojsonio
+Config/testthat/edition: 3
 License: GPL-3
 LazyData: true
 Encoding: UTF-8
@@ -33,9 +33,9 @@ Collate: 'generics.r' 'options.r' 'package.r' 'repr_datatable.r'
         'repr_matrix_df.r' 'repr_packageIQR.r' 'repr_plotly.r'
         'repr_recordedplot.r' 'repr_spatial.r' 'repr_ts.r'
         'repr_vega.r'
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2020-01-28 11:47:50 UTC; phil
+Packaged: 2021-01-21 09:01:45 UTC; phil
 Author: Philipp Angerer [aut, cre] (<https://orcid.org/0000-0002-0369-2888>),
   Thomas Kluyver [aut],
   Jan Schulz [aut],
@@ -46,4 +46,4 @@ Author: Philipp Angerer [aut, cre] (<https://orcid.org/0000-0002-0369-2888>),
   Dave Foster [ctb],
   Carson Sievert [ctb]
 Repository: CRAN
-Date/Publication: 2020-01-28 12:20:03 UTC
+Date/Publication: 2021-01-21 09:20:07 UTC

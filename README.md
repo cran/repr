@@ -1,8 +1,8 @@
 repr&emsp;[![b-Travis]][Travis] [![b-CRAN]][CRAN]
 ====
 
-[b-Travis]: https://travis-ci.org/IRkernel/repr.svg?branch=master "Build status"
-[Travis]: https://travis-ci.org/IRkernel/repr
+[b-Travis]: https://travis-ci.com/IRkernel/repr.svg?branch=master "Build status"
+[Travis]: https://travis-ci.com/IRkernel/repr
 [b-CRAN]: https://www.r-pkg.org/badges/version/repr "Comprehensive R Archive Network"
 [CRAN]: https://cran.r-project.org/package=repr
 
@@ -14,9 +14,9 @@ It is intended to be the basis of several packages that need to create rich text
 
 [print]: https://stat.ethz.ch/R-manual/R-devel/library/base/html/print.html
 [file_show]: https://stat.ethz.ch/R-manual/R-devel/library/base/html/file.show.html
-[Jupyter]: http://jupyter.org/
+[Jupyter]: https://jupyter.org/
 [IRkernel]: https://github.com/IRkernel/IRkernel
-[knitr]: http://yihui.name/knitr/
+[knitr]: https://yihui.org/knitr/
 
 Exports
 -------
@@ -61,5 +61,5 @@ Also Pander supports only text. Plots and images are also important to represent
 Pander is however awesome for high-quality Markdown so this project might want to depend on it.
 
 [Pander]: http://rapporter.github.io/pander/
-[Pandoc]: http://pandoc.org/
-[Markdown]: http://whatismarkdown.com/
+[Pandoc]: https://pandoc.org/
+[Markdown]: https://commonmark.org/
