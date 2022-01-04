@@ -1,4 +1,4 @@
-ca95d964f91c694e830a6a2048c01e4d *DESCRIPTION
+46a4cd752f3f165a4874e5878b95ca27 *DESCRIPTION
 1481cb3093888cc678fce8a07bb21765 *NAMESPACE
 2c00bf4c5ce1f23d57c83bf1c3c5eafc *NEWS.md
 3cff5bc1af8048e36f17e91eac61a142 *R/generics.r
@@ -8,7 +8,7 @@ eee61312745fc2896c803a7187128ab2 *R/repr_datatable.r
 21265614cf2ae86c06aac3cff0c7d050 *R/repr_datetime.r
 8c32905f769506f9442efd1097a79dcf *R/repr_factor.r
 3cfebb270e5cf04ee62e77a2facdb438 *R/repr_function.r
-31365cd7851e5d07f1f4dd7dc3d134eb *R/repr_help_files_with_topic.r
+7e4a0a739bb74313500907daf883d5c2 *R/repr_help_files_with_topic.r
 c479795eb2bdc72b5ac40cdd55360d4f *R/repr_htmlwidget.r
 8c895986bdfe6e5eabcde84d6fe24273 *R/repr_list.r
 01c717ed33ecf1efcd33442811fc2393 *R/repr_matrix_df.r
@@ -20,7 +20,7 @@ edf1e996da90f5097680052778769a47 *R/repr_ts.r
 91e46fcffec0af3adaf788bf5116490c *R/repr_vector.r
 36fba18c13bb45f28d2033da9acb18c9 *R/repr_vega.r
 ff12fdad19d9eb7a482d116b119a99c7 *R/utils.r
-4e1d04e31bd5297311aa7515d7398055 *README.md
+ee557dd0b751889710ae8a71cd385ceb *README.md
 9e3a74fda4182812b3d77861725aac48 *man/repr-generics.Rd
 77f85d916408adf1472c5082ef67708b *man/repr-options.Rd
 7deb88dd1ad4c3a87f568d2b45dc7a8c *man/repr-package.Rd
