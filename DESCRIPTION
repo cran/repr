@@ -1,6 +1,6 @@
 Package: repr
 Title: Serializable Representations
-Version: 1.1.4
+Version: 1.1.5
 Authors@R: c(
     person('Philipp', 'Angerer', email = 'phil.angerer@gmail.com', role = c('aut', 'cre'), comment = c(ORCID = "0000-0002-0369-2888")),
     person('Thomas', 'Kluyver', email = 'thomas@kluyver.me.uk', role = 'aut'),
@@ -23,7 +23,7 @@ Imports: utils, grDevices, htmltools, jsonlite, pillar (>= 1.4.0),
 Suggests: methods, highr, Cairo, stringr, testthat (>= 3.0.0), leaflet
 Enhances: data.table, tibble, htmlwidgets, vegalite, plotly, geojsonio
 Config/testthat/edition: 3
-License: GPL-3
+License: GPL (>= 3)
 Encoding: UTF-8
 Collate: 'generics.r' 'options.r' 'package.r' 'repr_datatable.r'
         'repr_datetime.r' 'utils.r' 'repr_list.r' 'repr_vector.r'
@@ -32,9 +32,9 @@ Collate: 'generics.r' 'options.r' 'package.r' 'repr_datatable.r'
         'repr_matrix_df.r' 'repr_packageIQR.r' 'repr_plotly.r'
         'repr_recordedplot.r' 'repr_spatial.r' 'repr_ts.r'
         'repr_vega.r'
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2022-01-04 08:53:05 UTC; phil
+Packaged: 2023-01-12 17:12:17 UTC; phil
 Author: Philipp Angerer [aut, cre] (<https://orcid.org/0000-0002-0369-2888>),
   Thomas Kluyver [aut],
   Jan Schulz [aut],
@@ -45,4 +45,4 @@ Author: Philipp Angerer [aut, cre] (<https://orcid.org/0000-0002-0369-2888>),
   Dave Foster [ctb],
   Carson Sievert [ctb]
 Repository: CRAN
-Date/Publication: 2022-01-04 14:20:06 UTC
+Date/Publication: 2023-01-12 17:40:02 UTC
