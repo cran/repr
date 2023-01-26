@@ -1,6 +1,6 @@
 Package: repr
 Title: Serializable Representations
-Version: 1.1.5
+Version: 1.1.6
 Authors@R: c(
     person('Philipp', 'Angerer', email = 'phil.angerer@gmail.com', role = c('aut', 'cre'), comment = c(ORCID = "0000-0002-0369-2888")),
     person('Thomas', 'Kluyver', email = 'thomas@kluyver.me.uk', role = 'aut'),
@@ -31,10 +31,10 @@ Collate: 'generics.r' 'options.r' 'package.r' 'repr_datatable.r'
         'repr_help_files_with_topic.r' 'repr_htmlwidget.r'
         'repr_matrix_df.r' 'repr_packageIQR.r' 'repr_plotly.r'
         'repr_recordedplot.r' 'repr_spatial.r' 'repr_ts.r'
-        'repr_vega.r'
+        'repr_vega.r' 'zzz_onload.r'
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-01-12 17:12:17 UTC; phil
+Packaged: 2023-01-26 22:01:36 UTC; phil
 Author: Philipp Angerer [aut, cre] (<https://orcid.org/0000-0002-0369-2888>),
   Thomas Kluyver [aut],
   Jan Schulz [aut],
@@ -45,4 +45,4 @@ Author: Philipp Angerer [aut, cre] (<https://orcid.org/0000-0002-0369-2888>),
   Dave Foster [ctb],
   Carson Sievert [ctb]
 Repository: CRAN
-Date/Publication: 2023-01-12 17:40:02 UTC
+Date/Publication: 2023-01-26 22:30:02 UTC
